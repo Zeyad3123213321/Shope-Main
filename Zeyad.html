@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Shop</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="imgs/Zeyad.png">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background: black;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        .shop-image {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 50px; /* Adjust size as needed */
+            height: auto;
+            border-radius: 5px;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .search-bar input {
+            padding: 5px;
+            border: none;
+            border-radius: 3px;
+        }
+
+        .cart-icon {
+            font-size: 24px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .cart-icon span {
+            background: red;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+            position: absolute;
+            top: -10px;
+            right: -10px;
+        }
+
+        section {
+            padding: 20px;
+            margin: 20px;
+            background: white;
+            border-radius: 5px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .product {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+            background: white;
+            border-radius: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .product:hover {
+            transform: scale(1.05);
+        }
+
+        .product img {
+            width: 100%;
+            height: auto;
+            max-width: 150px;
+        }
+
+        button {
+            border-radius: 50% 25px;
+            background: #0056b3;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover{
+          transition: 0.2s;
+          color: aqua;
+          background-color: black;
+        }
+
+        #cart-items li {
+            list-style: none;
+            margin: 10px 0;
+        }
+
+
+        footer {
+            text-align: center;
+            padding: 5px;
+            background: black;
+            color: white;
+            margin-top: 20px;
+        }
+
+        /* Checkout Form Styles */
+        #checkout {
+            display: none; /* Initially hidden */
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 800px; /* Increased max-width to accommodate image */
+            margin: 20px auto;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .checkout-container {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .checkout-image {
+            flex: 1;
+            max-width: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .checkout-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .checkout-form {
+            flex: 1;
+        }
+
+        #checkout h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            color: #333;
+        }
+
+        #checkout-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        #checkout-form label {
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 0.5rem;
+        }
+
+        #checkout-form input,
+        #checkout-form textarea {
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        #checkout-form input:focus,
+        #checkout-form textarea:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        #checkout-form textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        #checkout-form button {
+            background: #007bff;
+            color: white;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        #checkout-form button:hover {
+            background: #0056b3;
+        }
+        .shop-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .shop-item {
+            flex: 1 1 calc(33.333% - 20px); /* 3 items per row on larger screens */
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .shop-item {
+                flex: 1 1 calc(50% - 20px); /* 2 items per row on medium screens */
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .shop-item {
+                flex: 1 1 100%; /* 1 item per row on small screens */
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .checkout-container {
+                flex-direction: column;
+            }
+
+            .checkout-image {
+                max-width: 100%;
+            }
+
+            .shop-image {
+                width: 40px; /* Smaller size for mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Zeyad Online Shop</h1>
+        <img src="imgs/14.jpg" alt="Shop Logo" class="shop-image">
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#categories">Categories</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#about">About Us</a></li>
+            </ul>
+        </nav>
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Search products..." oninput="searchProducts()">
+            <i class="fas fa-search"></i>
+        </div>
+        <div class="cart-icon" onclick="toggleCart()">
+            <i class="fas fa-shopping-cart"></i>
+            <span id="cart-count">0</span>
+        </div>
+    </header>
+    
+    <section id="home">
+        <h2>Welcome To Zeyad Shop</h2>
+        <p>Welcome To Zeyad Shope, We Offer High-Quality "Products/Services" To Meet Your Needs. Whether you're looking For "Electronics & Accessories & Clothing" We are Here To Provide The Best Selection at Great Prices.</p>
+    </section>
+    
+    <section id="categories">
+        <h2>Categories</h2>
+        <div class="category-buttons">
+            <button onclick="filterProducts('all')">All</button>
+            <button onclick="filterProducts('electronics')">Electronics</button>
+            <button onclick="filterProducts('clothing')">Clothing</button>
+            <button onclick="filterProducts('accessories')">Accessories</button>
+        </div>
+    </section>
+    
+    <section id="products">
+        <h2>Products</h2>
+        <div class="product-grid" id="product-grid">
+            <!-- Products will be dynamically added here -->
+        </div>
+    </section>
+    
+    <section id="cart" style="display: none;">
+        <h2>Your Cart</h2>
+        <ul id="cart-items">
+        </ul>
+        <p>Total: $<span id="cart-total">0.00</span></p>
+        <button onclick="clearCart()">Clear Cart</button>
+        <button onclick="checkout()">Checkout</button>
+    </section>
+    
+    <section id="checkout">
+        <div class="checkout-container">
+            <div class="checkout-image">
+                <img src="imgs/work-steps-1.png" alt="Checkout Image">
+            </div>
+            <div class="checkout-form">
+                <h2>Checkout</h2>
+                <form id="checkout-form">
+                    <label for="name">Full Name:</label>
+                    <input type="text" id="name" placeholder="Enter your full name" required>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                    <label for="address">Shipping Address:</label>
+                    <textarea id="address" placeholder="Enter your shipping address" required></textarea>
+                    <button type="submit">Place Order</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <p>&copy; 2025 Zeyad Online Shop</p>
+    </footer>
+    
+    <script>
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        const products = [
+            { id: 1, name: "Apple iPhone 16 Pro Max", price: 1200, category: "electronics", image: "imgs/electronics 1.jpg", description: "A great electronic device." },
+            { id: 2, name: "Apple iPad Pro", price: 1000, category: "electronics", image: "imgs/electronics 2.jpg", description: "A great electronic device." },
+            { id: 3, name: "Airpods Pro", price: 200, category: "electronics", image: "imgs/electronics 3.jpg", description: "A great electronic device." },
+            { id: 4, name: "Airpods Max", price: 500, category: "electronics", image: "imgs/electronics 4.jpg", description: "A great electronic device." },
+            { id: 5, name: "Apple Vision Pro", price: 5000, category: "electronics", image: "imgs/electronics 5.jpg", description: "A great electronic device." },
+            { id: 6, name: "T-Shirt", price: 10, category: "clothing", image: "imgs/Clothing 1.jpg", description: "Comfortable and stylish clothing." },
+            { id: 7, name: "Blazer", price: 150, category: "clothing", image: "imgs/Clothing 2.jpg", description: "omfortable and stylish clothing." },
+            { id: 8, name: "Jackets", price: 30, category: "clothing", image: "imgs/Clothing 3.jpg", description: "omfortable and stylish clothing." },
+            { id: 9, name: "Pants", price: 10, category: "clothing", image: "imgs/Clothing 4.jpg", description: "omfortable and stylish clothing." },
+            { id: 10, name: "Nike Sokes", price: 5, category: "clothing", image: "imgs/Clothing 5.jpg", description: "Comfortable and stylish clothing." },
+            { id: 11, name: "Jewelry", price: 2000, category: "accessories", image: "imgs/Accessories 1.jpg", description: "Latest tech gadget." },
+            { id: 12, name: "Bag", price: 50, category: "accessories", image: "imgs/Accessories 2.jpg", description: "Latest tech gadget." },
+            { id: 13, name: "Hats & Caps", price: 3, category: "accessories", image: "imgs/Accessories 3.jpg", description: "A great electronic device." },
+            { id: 14, name: "Eyewear", price: 20, category: "accessories", image: "imgs/Accessories 4.jpg", description: "Latest tech gadget." },
+            { id: 14, name: "Watches", price: 400, category: "accessories", image: "imgs/Accessories 5.jpg", description: "Latest tech gadget." },
+        ];
+
+        function renderProducts(filter = 'all') {
+            const productGrid = document.getElementById("product-grid");
+            productGrid.innerHTML = "";
+            const filteredProducts = filter === 'all' ? products : products.filter(p => p.category === filter);
+            filteredProducts.forEach(product => {
+                const productDiv = document.createElement("div");
+                productDiv.className = "product";
+                productDiv.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}">
+                    <h3>${product.name}</h3>
+                    <p>$${product.price.toFixed(2)}</p>
+                    <button onclick="viewProduct(${product.id})">View Details</button>
+                    <button onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
+                `;
+                productGrid.appendChild(productDiv);
+            });
+        }
+
+        function viewProduct(id) {
+            const product = products.find(p => p.id === id);
+            if (product) {
+                alert(`Product: ${product.name}\nPrice: $${product.price}\nDescription: ${product.description}`);
+            }
+        }
+
+        function addToCart(product, price) {
+            cart.push({ product, price });
+            updateCart();
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById("cart-items");
+            const cartTotal = document.getElementById("cart-total");
+            const cartCount = document.getElementById("cart-count");
+
+            cartItems.innerHTML = "";
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                const li = document.createElement("li");
+                li.textContent = `${item.product} - $${item.price.toFixed(2)}`;
+                const removeButton = document.createElement("button");
+                removeButton.textContent = "Remove";
+                removeButton.onclick = () => removeFromCart(index);
+                li.appendChild(removeButton);
+                cartItems.appendChild(li);
+                total += item.price;
+            });
+
+            cartTotal.textContent = total.toFixed(2);
+            cartCount.textContent = cart.length;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        function clearCart() {
+            cart = [];
+            updateCart();
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        function toggleCart() {
+            const cartSection = document.getElementById("cart");
+            cartSection.style.display = cartSection.style.display === "none" ? "block" : "none";
+        }
+
+        function checkout() {
+            document.getElementById("cart").style.display = "none";
+            document.getElementById("checkout").style.display = "block";
+        }
+
+        document.getElementById("checkout-form").addEventListener("submit", function (e) {
+            e.preventDefault();
+            alert("Order placed successfully!");
+            clearCart();
+            document.getElementById("checkout").style.display = "none";
+        });
+
+        function filterProducts(category) {
+            renderProducts(category);
+        }
+
+        function searchProducts() {
+            const searchTerm = document.getElementById("search-input").value.toLowerCase();
+            const filteredProducts = products.filter(p => p.name.toLowerCase().includes(searchTerm));
+            renderProducts('all'); // Reset to all products first
+            const productGrid = document.getElementById("product-grid");
+            productGrid.innerHTML = "";
+            filteredProducts.forEach(product => {
+                const productDiv = document.createElement("div");
+                productDiv.className = "product";
+                productDiv.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}">
+                    <h3>${product.name}</h3>
+                    <p>$${product.price.toFixed(2)}</p>
+                    <button onclick="viewProduct(${product.id})">View Details</button>
+                    <button onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
+                `;
+                productGrid.appendChild(productDiv);
+            });
+        }
+
+        // Initial render
+        renderProducts();
+        updateCart();
+    </script>
+</body>
+</html>
